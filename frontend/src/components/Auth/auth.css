@@ -1,0 +1,85 @@
+div:has(> .sign_greet) {
+  padding: 1rem;
+  text-align: center;
+}
+
+.sign_greet {
+  font-family: var(--font-1);
+  font-weight: bold;
+  font-size: 1.2rem;
+
+  + p {
+    margin-bottom: var(--padding-1);
+    font-size: 1.2rem;
+  }
+}
+
+.auth_form {
+  display: grid;
+  gap: var(--gap);
+  justify-items: center;
+
+  .username_input,
+  .email_input {
+    width: 40%;
+
+    &:focus {
+      outline: 1px solid red;
+    }
+  }
+}
+
+.profile_sec {
+  & h2 {
+    margin-block: var(--padding-1);
+  }
+
+  form {
+    display: grid;
+    justify-items: center;
+  }
+
+  .textfields {
+    gap: var(--gap);
+    display: grid;
+    margin-inline: auto;
+    width: max(40%, 300px);
+  }
+
+  .avatar_div {
+    display: grid;
+    gap: 2rem;
+    margin-block: var(--padding-1) 3rem;
+    justify-self: center;
+    justify-items: center;
+
+    .avatar {
+      --avatar-size: 6rem;
+      width: var(--avatar-size);
+      font-size: 3rem;
+      height: var(--avatar-size);
+    }
+  }
+
+  .profile_input_group {
+    position: relative;
+    display: grid;
+    justify-items: center;
+
+    & input {
+      cursor: pointer;
+      opacity: 0;
+    }
+
+    & label {
+      position: absolute;
+      background-color: lightgray;
+      text-wrap: nowrap;
+      top: -0.2rem;
+      pointer-events: none;
+      padding: 0.4cqi 0.8cqi;
+      cursor: pointer;
+      border-radius: var(--radius);
+    }
+  }
+}

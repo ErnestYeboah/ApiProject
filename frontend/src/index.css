@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Abel&family=Julee&family=Big+Shoulders+Inline+Text&family=Bellefair&family=Cantata+One&family=Cormorant+Upright&family=Akaya+Kanadaka&family=Alice&family=Big+Shoulders+Stencil+Display&family=Corben&family=Croissant+One&family=Dynalight&family=Fira+Sans&family=Open+Sans&family=Explora&Jim+Nightshade&family=Medula+One&family=Satoshi&family=Inter&family=Mulish&family=Metal+Mania&family=Nova+Cut&family=UnifrakturMaguntia&family=Coda&family=Charm&family=Cookie&family=Felipa&family=Delius&family=Alex+Brush&family=Arsenal&family=Antonio:wght@100..700&family=Arapey:ital@0;1&family=Aref+Ruqaa:wght@400;700&family=Asul:wght@400;700&family=Bebas+Neue&family=Cardo:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Figtree&family=Fahkwang:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Cinzel+Decorative&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lobster+Two&family=Amita&family=Berkshire+Swash&family=Alfa+Slab+One&family=Orbitron&family=Abril+Fatface&family=Great+Vibes&family=Pacifico&family=Whisper&family=Satisfy&family=Dorsa&family=Exo&family=Farro&family=Montserrat+Alternates&family=Advent+Pro&family=Gotu&family=Jua&family=Laila&family=Notable&family=Proza+Libre&family=Marvel&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Emoji:wght@300..700&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Pattaya&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rum+Raisin&family=Sarpanch&family=Stick+No+Bills&family=Ubuntu&family=ZCOOL+XiaoWei&family=Rouge+Script&family=Quintessential&family=Roboto:ital,wght@0,400;0,700;1,300;1,400&display=swap");
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+:root {
+  --primary-clr: white;
+  --text-clr: black;
+  --accent-clr: rgb(255, 136, 0);
+  --gap: 1rem;
+  --font-1: Poppins;
+  --font-2: Playfair Display;
+  --font-3: Metal Mania;
+  --radius: 10px;
+  --step-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+  --step-1: clamp(1.35rem, 1.2761rem + 0.3696vw, 1.5625rem);
+  --step-2: clamp(1.62rem, 1.5041rem + 0.5793vw, 1.9531rem);
+  --step-3: clamp(1.944rem, 1.771rem + 0.8651vw, 2.4414rem);
+  --step-4: clamp(2.3328rem, 2.0827rem + 1.2504vw, 3.0518rem);
+  --step-5: clamp(2.7994rem, 2.4462rem + 1.7658vw, 3.8147rem);
+  --padding-min: 0.5rem;
+  --padding-1: 1rem;
+  --margin: 5rem;
+}
+
+h2 {
+  font-size: var(--step-2);
+  line-height: 1;
+  text-wrap: balance;
+  font-family: var(--font-2);
+}
+
+p,
+label,
+input {
+  font-family: var(--font-1);
+}
+
+button {
+  background-color: var(--btn-bg, var(--accent-clr));
+  color: var(--btn-clr);
+  padding: 0.5em 1em;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-1);
+  transition: scale 100ms;
+
+  &:hover {
+    scale: 0.9;
+    /* background-color: hsla(from var(--accent-clr) h s l / 0.6); */
+  }
+}
+
+img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+
+  height: var(--img-height, inherit);
+}
+
+.section {
+  padding-inline: var(--margin);
+  margin-bottom: var(--margin);
+}
+
+/* All products cards mother container */
+.products__container {
+  padding-inline: var(--gap);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--gap);
+
+  .product_card {
+    --card-height: 50vh;
+    height: var(--card-height);
+    display: grid;
+    grid-template-rows: calc(var(--card-height) - 10%) 10%;
+    box-shadow: 0px 4px 4px rgba(0 0 0 / 0.1);
+
+    .image_container {
+      height: 30vh;
+      margin-bottom: var(--padding-min);
+
+      & img {
+        height: inherit;
+      }
+    }
+
+    .heart {
+      scale: 1.5;
+    }
+  }
+}
+
+.favorite__item_wrapper {
+  container-name: favorite_item_wrapper;
+  container-type: inline-size;
+}
+
+@container favorite_item_wrapper (width > 40rem) {
+  .favorite_item {
+    width: 300px;
+  }
+}
+
+.svg {
+  cursor: none;
+}
+
+.favorite_item {
+  height: 50vh;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2cqb;
+  position: relative;
+
+  .remove_btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--accent-clr);
+    color: var(--primary-clr);
+    padding: 0.5rem;
+    border-radius: 0 0 0 10px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(255, 136, 0, 0.8);
+    }
+  }
+
+  & .image_container {
+    height: 30vh;
+
+    & img {
+      height: inherit;
+    }
+  }
+
+  .text__content {
+  }
+}

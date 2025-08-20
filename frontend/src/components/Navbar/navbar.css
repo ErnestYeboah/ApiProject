@@ -1,0 +1,166 @@
+@media (width > 992px) {
+  nav {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+
+    padding: 0.5rem 1rem;
+    box-shadow: 0px 4px 4px rgba(0 0 0 / 0.2);
+    min-height: 3rem;
+    align-items: center;
+  }
+
+  .search_sec {
+    --search-width: 330px;
+    display: grid;
+    grid-template-columns: var(--search-width) auto;
+    justify-content: center;
+    gap: 0.4rem;
+
+    .search {
+      outline: 1px ridge var(--accent-clr);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+    }
+  }
+
+  .logo {
+    font-family: var(--font-2);
+    position: relative;
+
+    & h2 {
+      font-size: 1.2rem;
+    }
+
+    .h_sup {
+      background-color: var(--accent-clr);
+      display: block;
+      position: absolute;
+      top: 0;
+      right: -20px;
+      font-size: 0.6rem;
+      width: 20px;
+      height: 20px;
+      border-radius: 100vw;
+      text-align: center;
+      align-content: center;
+      font-weight: bolder;
+    }
+  }
+
+  .navlinks {
+    display: flex;
+    gap: var(--gap);
+    font-size: 1.3rem;
+    align-items: center;
+
+    .wishlist_icon {
+      position: relative;
+      cursor: pointer;
+
+      .favorites_count {
+        position: absolute;
+        top: 15px;
+        right: -10px;
+        background-color: var(--accent-clr);
+        color: var(--primary-clr);
+        border-radius: 100vw;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.6rem;
+      }
+    }
+
+    .icon_div {
+      position: relative;
+      cursor: pointer;
+
+      &::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        white-space: nowrap;
+        bottom: -10px;
+        font-size: 0.7rem;
+        color: #2e2e2e;
+        opacity: var(--tooltip-opacity, 0);
+      }
+
+      &:hover {
+        --tooltip-opacity: 1;
+        scale: 1.1;
+      }
+    }
+  }
+}
+
+.search_category_btns_div {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap);
+  margin-block: var(--padding-1);
+
+  button.primary {
+    --btn-bg: var(--text-clr);
+    --btn-clr: var(--primary-clr);
+  }
+}
+
+.avatar {
+  &:hover {
+    box-shadow: 0px 0px 0px 5px rgba(0 0 0 / 0.1);
+    transition: box-shadow 200ms;
+  }
+}
+
+.profile_modal {
+  background-color: rgb(34, 31, 31);
+  color: var(--primary-clr);
+  position: fixed;
+  top: 3.5rem;
+  right: 3rem;
+  width: 20rem;
+  min-height: 50vh;
+  z-index: 1000;
+  padding: 2cqi;
+  display: grid;
+  gap: var(--gap);
+  border-radius: var(--radius);
+  opacity: 0;
+  display: none;
+  transition-behavior: allow-discrete;
+  transition-property: display opacity;
+  transition-duration: 300ms;
+
+  &.active {
+    opacity: 1;
+    display: grid;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  & a {
+    display: block;
+    padding: 0;
+    align-self: center;
+    padding-left: 0.3rem;
+    transition: 100ms ease;
+
+    &:hover {
+      background-color: #464646;
+    }
+  }
+
+  .user_details {
+    background-color: #464646;
+    border-radius: var(--radius);
+    text-align: center;
+    padding-block: var(--gap);
+    /* padding: calc(var(--gap) * 2); */
+  }
+
+  .avatar {
+    scale: 1.2;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+}
