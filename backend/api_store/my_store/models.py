@@ -44,10 +44,10 @@ class Cart(models.Model):
     added_by = models.ForeignKey(User, on_delete=models.CASCADE , null=True)
     added_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-
     product_name = models.CharField(max_length=255)
     product_id = models.OneToOneField(Product , unique=True, on_delete=models.CASCADE )
     category = models.CharField(max_length=255)
     quantity = models.IntegerField(default=1)
+    current_price = models.DecimalField(max_digits=10, decimal_places=2 , default=0.00)
     old_price = models.DecimalField(max_digits=10 , decimal_places=2 , default=200)
     size = models.CharField(max_length=255 , default="null")

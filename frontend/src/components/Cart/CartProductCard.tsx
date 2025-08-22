@@ -1,27 +1,50 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteFromCart,
+  cartItemsSlice,
   getCartItems,
+  renderLoadingState,
+  updateItemQuantity,
   type CartProduct,
 } from "../../features/CartSlice";
 import { productStoreSlice } from "../../features/ProductStoreSlice";
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useCookies } from "react-cookie";
+import Spinner from "./Spinner";
 
 const CartProductCard = ({ data }: { data: CartProduct }) => {
   const { id, product_id, product_name, category, quantity, added_on, size } =
     data as CartProduct;
   const { products } = useSelector(productStoreSlice);
-  const [cookie] = useCookies(["token"]);
   const dispatch = useDispatch();
-
   const { thumbnail, old_price, price } = products[product_id - 1];
-  const [newQuantity, setNewQuantity] = useState(quantity);
+  const [newQuantity, setNewQuantity] = useState<number>();
+  const [cookie] = useCookies(["token"]);
+  const { updating_item_quantity_status, isLoading } =
+    useSelector(cartItemsSlice);
 
-  const removeFromCart = useCallback((id: number) => {
-    dispatch(deleteFromCart({ id: id, token: cookie["token"] }));
-    dispatch(getCartItems(cookie["token"]));
-  }, []);
+  useEffect(() => {
+    if (newQuantity) {
+      dispatch(renderLoadingState(true));
+
+      setTimeout(() => {
+        dispatch(
+          updateItemQuantity({
+            quantity: newQuantity,
+            id: id,
+            token: cookie["token"],
+          })
+        );
+      }, 1000);
+    }
+  }, [newQuantity]);
+
+  useEffect(() => {
+    if (updating_item_quantity_status == "succeeded") {
+      dispatch(renderLoadingState(false));
+      dispatch(getCartItems(cookie["token"]));
+    }
+  }, [updating_item_quantity_status, dispatch]);
 
   return (
     <div className="cart_card">
@@ -33,29 +56,33 @@ const CartProductCard = ({ data }: { data: CartProduct }) => {
           <p className="font-bold">{product_name}</p>
           <p>{category}</p>
           <p>Size : {size}</p>
-          <label className="flex items-center gap-2" htmlFor="quantity">
-            Qty:
-            <input
-              type="number"
-              className="bg-gray-300 p-1 w-[5rem] text-center"
-              value={newQuantity}
-              id="quantity"
-              onChange={(e) => setNewQuantity(Number(e.target.value))}
-            />
-          </label>
+          <div className="flex items-center gap-1 ">
+            <label className="flex items-center gap-2" htmlFor="quantity">
+              Qty:
+              <input
+                type="number"
+                disabled={isLoading}
+                className="bg-gray-300 p-1 w-[5rem] text-center"
+                value={newQuantity}
+                placeholder={quantity.toString()}
+                id="quantity"
+                min={1}
+                onChange={(e) => setNewQuantity(Number(e.target.value))}
+              />
+            </label>
+            {isLoading && <Spinner />}
+          </div>
           <p className="opacity-[.6] text-nowrap date_tag ">
             Added on {new Date(added_on).toLocaleString()}
           </p>
         </div>
-        <div className="prices mt-[2rem] justify-self-end pr-[var(--gap)]">
+        <div className="prices mt-[2rem] text-center justify-self-end pr-[var(--gap)]">
+          <p className="text-[1.4rem] text-[var(--accent-clr)]">₵{price}</p>
           <p>
             <s>₵{old_price}</s>
           </p>
-          <p>₵{price}</p>
         </div>
-        <button onClick={() => removeFromCart(id)} className="remove_btn">
-          Remove
-        </button>
+        <ConfirmDeleteModal title={product_name} id={id} />
       </div>
     </div>
   );

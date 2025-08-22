@@ -12,6 +12,7 @@ export type CartProduct = {
   quantity: number;
   old_price: number;
   size: string;
+  current_price: number;
 };
 
 interface State {
@@ -20,6 +21,7 @@ interface State {
   adding_item_to_cart_status: "idle" | "pending" | "succeeded" | "failed";
   removing_item_from_cart_status: "idle" | "pending" | "succeeded" | "failed";
   updating_item_quantity_status: "idle" | "pending" | "succeeded" | "failed";
+  isLoading: boolean;
 }
 
 const initialState: State = {
@@ -28,6 +30,7 @@ const initialState: State = {
   adding_item_to_cart_status: "idle",
   removing_item_from_cart_status: "idle",
   updating_item_quantity_status: "idle",
+  isLoading: false,
 };
 
 type Payload = {
@@ -70,7 +73,7 @@ type DeleteCartItemPayload = {
   id: number;
   token: string;
 };
-export const deleteFromCart : any = createAsyncThunk(
+export const deleteFromCart: any = createAsyncThunk(
   "delete/cart",
   async (payload: DeleteCartItemPayload) => {
     const { id, token } = payload;
@@ -91,7 +94,7 @@ type UpdatePayload = {
   token: string;
   quantity: number;
 };
-export const updateItemQuantity = createAsyncThunk(
+export const updateItemQuantity: any = createAsyncThunk(
   "render_quantity/cart",
   async (payload: UpdatePayload) => {
     const { id, token, quantity } = payload;
@@ -118,7 +121,11 @@ export const updateItemQuantity = createAsyncThunk(
 export const CartStoreSlice = createSlice({
   initialState,
   name: "cart",
-  reducers: {},
+  reducers: {
+    renderLoadingState(state, action) {
+      state.isLoading = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       // adding items to cart
@@ -134,9 +141,12 @@ export const CartStoreSlice = createSlice({
       })
       .addCase(addItemsToCart.rejected, (state) => {
         state.adding_item_to_cart_status = "failed";
-        toast.error("Could not add to cart", {
-          hideProgressBar: true,
-        });
+        toast.error(
+          "Could not add to cart , item already exists or check your internet connection",
+          {
+            hideProgressBar: true,
+          }
+        );
       })
 
       // fetching cart items
@@ -174,12 +184,10 @@ export const CartStoreSlice = createSlice({
       // updating item quantity
       .addCase(updateItemQuantity.pending, (state) => {
         state.updating_item_quantity_status = "pending";
+        // toast.loading("Applying your changes...");
       })
       .addCase(updateItemQuantity.fulfilled, (state) => {
         state.updating_item_quantity_status = "succeeded";
-        toast.success("Item successfully removed from cart", {
-          hideProgressBar: true,
-        });
       })
       .addCase(updateItemQuantity.rejected, (state) => {
         state.updating_item_quantity_status = "failed";
@@ -191,4 +199,5 @@ export const CartStoreSlice = createSlice({
 });
 
 export default CartStoreSlice.reducer;
+export const { renderLoadingState } = CartStoreSlice.actions;
 export const cartItemsSlice = (state: { cart: State }) => state.cart;

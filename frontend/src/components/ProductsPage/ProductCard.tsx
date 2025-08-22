@@ -29,6 +29,7 @@ const ProductCard = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [cookie] = useCookies(["token"]);
+  const [sizeError, setSizeError] = useState("");
 
   const saveToFavoritesApi = useCallback(
     (product: Product) => {
@@ -59,17 +60,22 @@ const ProductCard = ({
     product_name: product_name,
     product_id: id,
     old_price: old_price,
+    current_price: price,
     quantity: quantity,
     size: size,
   };
 
   const addToCart = () => {
-    dispatch(
-      addItemsToCart({
-        token: cookie["token"],
-        product: itemsToAddCartData,
-      })
-    );
+    if (size !== "") {
+      dispatch(
+        addItemsToCart({
+          token: cookie["token"],
+          product: itemsToAddCartData,
+        })
+      );
+    } else {
+      setSizeError("Select a size to continue");
+    }
   };
 
   return (
@@ -162,6 +168,7 @@ const ProductCard = ({
             ) : (
               <SizeList sizetype="shoes_size" />
             )}
+            <p className="text-red-500">{sizeError && sizeError}</p>
 
             <p className="description">{description}</p>
             <label className="flex gap-2 items-center" htmlFor="quantity">

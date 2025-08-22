@@ -69,9 +69,11 @@ const Navbar = () => {
 
         <div className="navlinks">
           <div className="wishlist_icon icon_div" data-tooltip="wishlist">
-            <p className="favorites_count pointer-events-none">
-              {favorites.length}
-            </p>
+            {favorites.length !== 0 && (
+              <p className="favorites_count pointer-events-none">
+                {favorites.length}
+              </p>
+            )}
             <HeartOutlinedMemo
               className="icon"
               onClick={() => navigate("/favorites")}
@@ -102,7 +104,11 @@ const Navbar = () => {
           )}
 
           <div className="cart_icon icon_div" data-tooltip="Cart">
-            <p className="favorites_count pointer-events-none">{cart.length}</p>
+            {cart.length != 0 && (
+              <p className="favorites_count pointer-events-none">
+                {cart.length}
+              </p>
+            )}
             <Link to={"/cart"}>
               <ShoppingCartOutlinedMemo className="icon" />
             </Link>
