@@ -17,6 +17,14 @@ class FavoriteItemsSerializers(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta :
+        model = Cart
+        fields = "__all__"
+
+    
+
         
     
 class UserSerializer(serializers.ModelSerializer):
@@ -36,4 +44,6 @@ class UserSerializer(serializers.ModelSerializer):
        return user
 
   
+
+
 

@@ -10,21 +10,21 @@ const sliderImages = [
 const CarouselContainer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCurrentIndex((c) => c + 1);
-  //   }, 4000);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((c) => c + 1);
+    }, 4000);
 
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, [currentIndex]);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [currentIndex]);
 
-  // useEffect(() => {
-  //   if (currentIndex >= sliderImages.length) {
-  //     setCurrentIndex(0);
-  //   }
-  // }, [currentIndex, sliderImages.length]);
+  useEffect(() => {
+    if (currentIndex >= sliderImages.length) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, sliderImages.length]);
 
   return (
     <div className="carousel">

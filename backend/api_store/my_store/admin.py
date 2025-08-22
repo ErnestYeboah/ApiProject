@@ -16,3 +16,11 @@ class FavoriteItemsAdmin(admin.ModelAdmin):
     list_display = ["product_name", "added_by"]
     search_fields = ["product_name"]
     ordering = ["-added_on"]
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ["product_name", "added_on" , "old_price"]
+    search_fields = ["product_name" , "category"]
+    ordering = ["-added_on"]
+    

@@ -52,3 +52,18 @@ class UserProfileViewset(ModelViewSet):
       
 
 
+
+class CartViewset(ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated ,]
+    authentication_classes = [TokenAuthentication, ]
+
+
+    def perform_create(self, serializer):
+        serializer.save(added_by = self.request.user)
+
+    def get_queryset(self):
+        return self.queryset.filter(added_by = self.request.user)
+    
+    

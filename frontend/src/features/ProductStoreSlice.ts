@@ -12,7 +12,8 @@ export type Product = {
   thumbnail: string;
   price: number;
   description: string;
-  isFavorite: boolean;
+  isAvailable: boolean;
+  old_price: number;
 };
 
 export type User = {
@@ -29,6 +30,7 @@ interface State {
   error: null | string;
   token: string;
   isAuthenticated: boolean;
+  size: string;
 }
 
 const initialState: State = {
@@ -39,6 +41,7 @@ const initialState: State = {
   token: "",
   user: [],
   isAuthenticated: false,
+  size: "",
 };
 
 let all_products_id: any;
@@ -153,6 +156,10 @@ export const ProductStoreSlice = createSlice({
 
     setIsAuthenticated(state, action) {
       state.isAuthenticated = action.payload;
+    },
+
+    getProductSize(state, action) {
+      state.size = action.payload;
     },
   },
   extraReducers(builder) {
@@ -272,5 +279,6 @@ export const ProductStoreSlice = createSlice({
 });
 
 export default ProductStoreSlice.reducer;
-export const { logout, setIsAuthenticated } = ProductStoreSlice.actions;
+export const { logout, setIsAuthenticated, getProductSize } =
+  ProductStoreSlice.actions;
 export const productStoreSlice = (state: { products: State }) => state.products;

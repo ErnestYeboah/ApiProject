@@ -53,7 +53,8 @@
     font-size: 1.3rem;
     align-items: center;
 
-    .wishlist_icon {
+    .wishlist_icon,
+    .cart_icon {
       position: relative;
       cursor: pointer;
 

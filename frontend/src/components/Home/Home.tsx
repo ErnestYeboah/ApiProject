@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import SearchCategory from "../Navbar/SearchCategory";
 import CarouselContainer from "./Carousel";
 import React, { Fragment } from "react";
+import "./home.css";
 
 type JustIn = {
   name: string;
@@ -78,8 +78,6 @@ const Home = () => {
       </section>
 
       <footer>
-        <SearchCategory />
-
         <p className="text-center">
           {" "}
           &copy; 2025 AMAETON FASHION HOUSE. All rights reserved

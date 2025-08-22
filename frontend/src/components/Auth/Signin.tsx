@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,36 +18,24 @@ const Signin = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [showPassword, setShowPassword] = useState(false);
 
-  const showPendingState = () => {
+  const showPendingState = useCallback(() => {
     messageApi.open({
       type: "loading",
       content: "Authenticatin user , please wait.....",
       duration: 0,
     });
     // Dismiss manually and asynchronously
-  };
+  }, []);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
 
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const [rememberMe, setRememberMe] = useState(true);
 
   const { username, password } = formData;
+  const [rememberMe, setRememberMe] = useState(true);
 
   const { token, status } = useSelector(productStoreSlice);
   const dispatch = useDispatch();
@@ -114,8 +102,6 @@ const Signin = () => {
                     showPassword ? "hide the password" : "display the password"
                   }
                   onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  onMouseUp={handleMouseUpPassword}
                   edge="end"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}

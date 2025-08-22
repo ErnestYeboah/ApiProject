@@ -11,7 +11,9 @@ const SingleProduct = () => {
 
   return (
     <div className="solo_preview">
-      {productsToShow && <ProductCard productData={productsToShow} />}
+      {productsToShow && (
+        <ProductCard type="Detailed" productData={productsToShow} />
+      )}
     </div>
   );
 };

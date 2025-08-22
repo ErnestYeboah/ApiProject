@@ -11,10 +11,17 @@ import { useCookies } from "react-cookie";
 import SearchCategory from "./SearchCategory";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, productStoreSlice } from "../../features/ProductStoreSlice";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { favoritesProuctsStore } from "../../features/FavoriteStoreSlice";
+import { cartItemsSlice } from "../../features/CartSlice";
 
+// Optimization for children components when their props change
 const SearchCategoryMemo = React.memo(SearchCategory);
+const ShoppingCartOutlinedMemo = React.memo(ShoppingCartOutlined);
+const HeartOutlinedMemo = React.memo(HeartOutlined);
+const UserOutlinedMemo = React.memo(UserOutlined);
+const LogoutOutlinedMemo = React.memo(LogoutOutlined);
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [cookie, , removeCookie] = useCookies(["token"]);
@@ -22,17 +29,19 @@ const Navbar = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const { user } = useSelector(productStoreSlice);
   const { favorites } = useSelector(favoritesProuctsStore);
-  const signout = () => {
+  const { cart } = useSelector(cartItemsSlice);
+
+  const signout = useCallback(() => {
     removeCookie("token");
     dispatch(logout());
     navigate("/signin");
     setShowProfileModal(false);
-  };
+  }, []);
 
-  const goToProfilePage = () => {
+  const goToProfilePage = useCallback(() => {
     navigate("/profile");
     setShowProfileModal(false);
-  };
+  }, []);
   const path = location.pathname;
 
   return (
@@ -63,7 +72,7 @@ const Navbar = () => {
             <p className="favorites_count pointer-events-none">
               {favorites.length}
             </p>
-            <HeartOutlined
+            <HeartOutlinedMemo
               className="icon"
               onClick={() => navigate("/favorites")}
             />
@@ -87,13 +96,16 @@ const Navbar = () => {
           ) : (
             <div className="user_icon icon_div" data-tooltip="Sign In">
               <Link to={"/signin"}>
-                <UserOutlined className="icon" />
+                <UserOutlinedMemo className="icon" />
               </Link>
             </div>
           )}
 
           <div className="cart_icon icon_div" data-tooltip="Cart">
-            <ShoppingCartOutlined className="icon" />
+            <p className="favorites_count pointer-events-none">{cart.length}</p>
+            <Link to={"/cart"}>
+              <ShoppingCartOutlinedMemo className="icon" />
+            </Link>
           </div>
         </div>
       </nav>
@@ -130,7 +142,7 @@ const Navbar = () => {
           onClick={signout}
           className="content-end cursor-pointer"
         >
-          <LogoutOutlined /> Log out
+          <LogoutOutlinedMemo /> Log out
         </Link>
       </div>
 

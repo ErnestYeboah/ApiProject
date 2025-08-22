@@ -39,6 +39,7 @@ p,
 label,
 input {
   font-family: var(--font-1);
+  /* font-size: var(--step-0); */
 }
 
 button {
@@ -120,21 +121,6 @@ img {
   gap: 2cqb;
   position: relative;
 
-  .remove_btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: var(--accent-clr);
-    color: var(--primary-clr);
-    padding: 0.5rem;
-    border-radius: 0 0 0 10px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgba(255, 136, 0, 0.8);
-    }
-  }
-
   & .image_container {
     height: 30vh;
 
@@ -142,7 +128,60 @@ img {
       height: inherit;
     }
   }
+}
 
-  .text__content {
+.remove_btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--accent-clr);
+  color: var(--primary-clr);
+  padding: 0.5rem;
+  border-radius: 0 0 0 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 136, 0, 0.8);
+  }
+}
+
+.product_card_detailed {
+  --card-height: 80vh;
+  height: var(--card-height);
+  padding-inline: var(--margin);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--gap) * 2);
+
+  .image_container {
+    position: relative;
+    height: calc(var(--card-height) - 20vh);
+    margin-bottom: var(--padding-min);
+
+    .heart_div {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    & img {
+      height: inherit;
+    }
+  }
+
+  .heart {
+    scale: 1.5;
+  }
+
+  .quantity_input {
+    padding-block: 0.5rem;
+    width: 5rem;
+    text-align: center;
+    background-color: lightgray;
+    font-size: 1.2rem;
+
+    &:focus {
+      outline: none;
+    }
   }
 }

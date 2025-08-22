@@ -20,6 +20,8 @@ import Profile from "./components/Auth/Profile";
 import Signup from "./components/Auth/Signup";
 import Favorites from "./components/ProductsPage/Favorites";
 import { getFavoritesItems } from "./features/FavoriteStoreSlice";
+import { getCartItems } from "./features/CartSlice";
+import CartHome from "./components/Cart/CartHome";
 
 const MemoNavBar = React.memo(Navbar);
 function App() {
@@ -36,6 +38,7 @@ function App() {
       dispatch(getUserProfile(cookie["token"]));
       dispatch(setIsAuthenticated(true));
       dispatch(getFavoritesItems(cookie["token"]));
+      dispatch(getCartItems(cookie["token"]));
     }
   }, [cookie]);
 
@@ -52,6 +55,7 @@ function App() {
         <Route path="/product/:id" element={<SingleProduct />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/cart" element={<CartHome />} />
       </Routes>
     </>
   );

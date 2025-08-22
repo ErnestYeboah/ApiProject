@@ -1,0 +1,42 @@
+.cart_card {
+  height: 40vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: var(--gap);
+  gap: var(--gap);
+  position: relative;
+
+  > *:not(.image__container) {
+    padding-top: var(--padding-1);
+  }
+
+  & .image__container {
+    height: inherit;
+
+    & img {
+      object-fit: cover;
+      height: 100%;
+      border-radius: var(--radius);
+    }
+  }
+
+  .text__content_div {
+    box-shadow: 0px 4px 4px rgba(0 0 0 / 0.2);
+    grid-column: span 2;
+    border-radius: var(--radius);
+    padding-inline: var(--padding-1);
+    position: relative;
+  }
+
+  .date_tag {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 1rem;
+  }
+
+  .text__content {
+    > * {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

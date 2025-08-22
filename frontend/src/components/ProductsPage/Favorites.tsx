@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { productStoreSlice } from "../../features/ProductStoreSlice";
 import FavoriteProductCard from "./FavoriteProductCard";
@@ -15,10 +15,10 @@ const Favorites = () => {
   const [cookie] = useCookies(["token"]);
   const dispatch = useDispatch();
 
-  const removeFromFavorite = (id: number, index: number) => {
+  const removeFromFavorite = useCallback((id: number, index: number) => {
     dispatch(removeItemFromFavorites(index));
     dispatch(deleteFromFavorites({ token: cookie["token"], id: id }));
-  };
+  }, []);
 
   return (
     <Fragment>
