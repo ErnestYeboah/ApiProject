@@ -24,6 +24,7 @@ const Favorites = () => {
     <Fragment>
       <div className="products__container favorites__container">
         {favorites &&
+          cookie["token"] &&
           favorites.map((favorite, index) => {
             const product = products.find(
               (item) => item.id === favorite.product_id

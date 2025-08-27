@@ -13,11 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { productStoreSlice, signIn } from "../../features/ProductStoreSlice";
 import { useCookies } from "react-cookie";
 import { message } from "antd";
+import emailjs from "@emailjs/browser";
 
 const Signin = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [showPassword, setShowPassword] = useState(false);
-
+  const { user } = useSelector(productStoreSlice);
   const showPendingState = useCallback(() => {
     messageApi.open({
       type: "loading",

@@ -9,7 +9,7 @@ const ProductHome = () => {
     <div className="products__container">
       {products &&
         products.map((product, index) => (
-          <ProductCard productData={product} key={index} />
+          <ProductCard type="Regular" productData={product} key={index} />
         ))}
     </div>
   );

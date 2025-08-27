@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productStoreSlice, signUp } from "../../features/ProductStoreSlice";
 import { message } from "antd";
+import emailjs from "@emailjs/browser";
 
 const Signup = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -27,18 +28,6 @@ const Signup = () => {
   };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
 
   const [formData, setFormData] = useState({
     username: "",
@@ -56,6 +45,15 @@ const Signup = () => {
   const getFormValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((f) => ({ ...f, [name]: value }));
+  };
+
+  const serviceID = "service_23ywtw9";
+  const templateID = "template_9l70bgq";
+  const public_key = "cthl5Z_PUh6s4qIx2";
+
+  const templateParams = {
+    name: username,
+    email: email,
   };
 
   const signupUser = (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,6 +87,7 @@ const Signup = () => {
       email !== ""
     ) {
       messageApi.destroy();
+      emailjs.send(serviceID, templateID, templateParams, public_key);
       navigate("/signin");
     }
   }, [status, dispatch]);
@@ -138,8 +137,6 @@ const Signup = () => {
                     showPassword ? "hide the password" : "display the password"
                   }
                   onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  onMouseUp={handleMouseUpPassword}
                   edge="end"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -167,8 +164,6 @@ const Signup = () => {
                     showPassword ? "hide the password" : "display the password"
                   }
                   onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  onMouseUp={handleMouseUpPassword}
                   edge="end"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}

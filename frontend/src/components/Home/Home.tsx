@@ -40,9 +40,9 @@ const Home = () => {
         </Link>
       </div>
 
-      <section id="categor_brief_log" className="section">
+      <section id="category_brief_log" className="section">
         <h2 className="mb-[var(--padding-1)]">Shop By Style</h2>
-        <div className="parent_grid">
+        <div className="parent_grid category_div">
           <div className="first_child">
             <button>Clothing</button>
           </div>

@@ -67,6 +67,7 @@ const ProductCard = ({
 
   const addToCart = () => {
     if (size !== "") {
+      setSizeError("");
       dispatch(
         addItemsToCart({
           token: cookie["token"],
@@ -87,13 +88,14 @@ const ProductCard = ({
               <div className="image_container">
                 <img src={thumbnail} loading="lazy" alt={product_name} />
               </div>
-              <p className="font-bold">{product_name}</p>
+              <p className="font-bold ">{product_name}</p>
               <p>{category.charAt(0).toUpperCase() + category.slice(1)}</p>
             </div>
           </Link>
           <div className="flex justify-between mx-3">
             <p>₵{price}</p>
-            {favorites.some(
+            {cookie["token"] &&
+            favorites.some(
               (fav) => fav.product_name === productData.product_name
             ) ? (
               <svg
@@ -155,7 +157,9 @@ const ProductCard = ({
           <div className="text__content_wrapper flex flex-col gap-4 ">
             <div className="product_name_with_category_wrapper flex gap-2.5 justify-between items-center ">
               <div className="first_col ">
-                <p className="font-bold text-[2rem]">{product_name}</p>
+                <p className="font-bold product_name text-[2rem]">
+                  {product_name}
+                </p>
                 <p>{category.charAt(0).toUpperCase() + category.slice(1)}</p>
                 <p className="text-[var(--accent-clr)]">
                   {isAvailable ? "Available in Store" : "Not Available Now"}
@@ -174,7 +178,7 @@ const ProductCard = ({
             <label className="flex gap-2 items-center" htmlFor="quantity">
               Qty :
               <input
-                className="quantity_input"
+                className="quantity_input "
                 type="number"
                 name="quantity"
                 value={quantity}

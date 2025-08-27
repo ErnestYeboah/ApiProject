@@ -1,5 +1,5 @@
 .carousel {
-  max-width: 100%;
+  width: 100%;
   height: 80vh;
   overflow-x: hidden;
   position: relative;
@@ -55,9 +55,9 @@
 
 .intro {
   display: grid;
-  place-self: center;
-  max-width: 40%;
+  width: max(50%, 300px);
   text-align: center;
+  margin-inline: auto;
   margin-block: var(--margin);
 
   & h1 {
@@ -75,15 +75,24 @@
     --btn-clr: var(--primary-clr);
   }
 }
-
+.category_div {
+  @media (width < 992px) {
+    & button {
+      border-radius: 0 0 1rem 0;
+    }
+  }
+}
 .parent_grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gap);
   grid-auto-rows: 50vh;
+  gap: var(--gap);
 
-  > * {
-    padding: var(--padding-min);
+  @media (width > 992px) {
+    grid-template-columns: repeat(3, 1fr);
+
+    > * {
+      padding: var(--padding-min);
+    }
   }
 
   & .first_child {
@@ -98,28 +107,48 @@
 }
 
 .just_in_sec {
-  grid-auto-rows: 70vh;
-  > * {
+  @media (width < 992px) {
+    > * {
+      display: grid;
+      grid-template-rows: 300px 3rem;
+      flex-direction: column;
+      align-items: center;
+      justify-items: start;
+    }
+
     & img {
-      height: 90%;
-      object-fit: cover;
-      object-position: top;
+      height: 100%;
     }
   }
 
-  > :nth-child(2) {
-    margin-bottom: -5rem;
-  }
-  > :nth-child(5) {
-    margin-block: 5rem -5rem;
+  @media (width > 992px) {
+    grid-auto-rows: 70vh;
+    > * {
+      & img {
+        height: 90%;
+        object-fit: cover;
+        object-position: top;
+      }
+    }
+
+    > :nth-child(2) {
+      margin-bottom: -5rem;
+    }
+    > :nth-child(5) {
+      margin-block: 5rem -5rem;
+    }
   }
 }
 
 .logo_name {
   font-family: var(--font-3);
-  font-size: 4rem;
+  font-size: clamp(2rem, 5vw, 4rem);
   text-align: center;
-  margin-top: calc(var(--margin) * 2);
+  margin-top: calc(var(--margin) * 3);
+
+  @media (width < 992px) {
+    margin-top: 2rem;
+  }
 }
 
 footer {

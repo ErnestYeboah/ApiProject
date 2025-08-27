@@ -10,8 +10,24 @@ import { Avatar } from "antd";
 import { useCookies } from "react-cookie";
 import SearchCategory from "./SearchCategory";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, productStoreSlice } from "../../features/ProductStoreSlice";
-import React, { useCallback, useState } from "react";
+import { GiClothes, GiJeweledChalice, GiSonicShoes } from "react-icons/gi";
+import { DiHtml5DeviceAccess } from "react-icons/di";
+import { MdOutlineAllInclusive } from "react-icons/md";
+import { TbShoppingCart } from "react-icons/tb";
+import { FaRegHeart } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
+import { MdWatch } from "react-icons/md";
+import { LuPencil } from "react-icons/lu";
+
+import {
+  getSearchParams,
+  logout,
+  productStoreSlice,
+  searchProducts,
+  setProfileModalState,
+  toggleSidebarView,
+} from "../../features/ProductStoreSlice";
+import React, { useCallback, useEffect, useState } from "react";
 import { favoritesProuctsStore } from "../../features/FavoriteStoreSlice";
 import { cartItemsSlice } from "../../features/CartSlice";
 
@@ -26,26 +42,151 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [cookie, , removeCookie] = useCookies(["token"]);
   const dispatch = useDispatch();
-  const [showProfileModal, setShowProfileModal] = useState(false);
-  const { user } = useSelector(productStoreSlice);
+  const { user, search_params, sidebar_isActive, products, profileModalState } =
+    useSelector(productStoreSlice);
   const { favorites } = useSelector(favoritesProuctsStore);
   const { cart } = useSelector(cartItemsSlice);
+  const [searchSuggestions, setSearchSuggestions] = useState<
+    { product_name: string }[]
+  >([]);
 
   const signout = useCallback(() => {
     removeCookie("token");
     dispatch(logout());
     navigate("/signin");
-    setShowProfileModal(false);
+    dispatch(setProfileModalState(false));
   }, []);
 
   const goToProfilePage = useCallback(() => {
     navigate("/profile");
-    setShowProfileModal(false);
+    dispatch(setProfileModalState(false));
   }, []);
   const path = location.pathname;
 
+  const getSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(getSearchParams(e.target.value));
+    if (search_params.length >= 2) {
+      const cpyFilter = products.filter(
+        (product: { product_name: string }) =>
+          product.product_name.toLowerCase().indexOf(search_params) != -1
+      );
+      if (cpyFilter) {
+        setSearchSuggestions(cpyFilter);
+      }
+    }
+    if (e.target.value === "") {
+      setSearchSuggestions([]);
+    }
+  };
+
+  const startSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (search_params !== "") {
+      dispatch(searchProducts(search_params));
+      navigate(`/search/${search_params}`);
+      setSearchSuggestions([]);
+    }
+  };
+
   return (
     <>
+      {/* for mobile devices */}
+      <div className="sticky_nav glass">
+        <div className="logo">
+          <Link to={"/"}>
+            <h2 className="cursor-pointer">
+              Amaeton Fashion <span className="h_sup">H</span>
+            </h2>
+          </Link>
+        </div>
+
+        <button
+          onClick={() =>
+            sidebar_isActive
+              ? dispatch(toggleSidebarView(false))
+              : dispatch(toggleSidebarView(true))
+          }
+          className={
+            sidebar_isActive ? "hamburger_btn active" : "hamburger_btn"
+          }
+        >
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </button>
+
+        <div
+          onClick={() => dispatch(toggleSidebarView(false))}
+          className="side__bar glass"
+        >
+          <p className="px-4">Category</p>
+
+          <div className="links link__two">
+            <Link to={"/products"}>
+              <MdOutlineAllInclusive />
+              All
+            </Link>
+          </div>
+          <div className="links link__three">
+            <Link to={`/products/clothing`}>
+              <GiClothes />
+              Clothing
+            </Link>
+          </div>
+          <div className="links link__four">
+            <Link to={`products/shoes`}>
+              <GiSonicShoes />
+              Shoes
+            </Link>
+          </div>
+          <div className="links link__five">
+            <Link to={`/products/accessories`}>
+              <DiHtml5DeviceAccess />
+              Accessories
+            </Link>
+          </div>
+
+          <div className="links link__six">
+            <Link to={`/products/jewelry`}>
+              <GiJeweledChalice />
+              Jewelry
+            </Link>
+          </div>
+          <div className="links link__seven">
+            <Link to={`/products/watches`}>
+              <MdWatch />
+              Watches
+            </Link>
+          </div>
+          <div className="links link__eight">
+            <Link to={`/favorites`}>
+              <FaRegHeart />
+              Favorites
+            </Link>
+          </div>
+          <div className="links link__nine">
+            <Link to={`/cart`}>
+              <TbShoppingCart />
+              Cart
+            </Link>
+          </div>
+          <div className="links last_link">
+            {cookie["token"] ? (
+              <button className="ml-[1rem]" onClick={signout}>
+                Log Out
+              </button>
+            ) : (
+              <Link to={`/signin`}>
+                <ImProfile />
+                Sign In
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* for all devices */}
+
       <nav>
         <div className="logo">
           <Link to={"/"}>
@@ -55,21 +196,48 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <form className="search_sec" action="" method="get">
+        <form
+          onSubmit={startSearch}
+          className="search_sec"
+          action=""
+          method="get"
+        >
           <input
             className="search"
             type="search"
             name="search"
+            autoComplete="off"
             id="search"
+            value={search_params}
+            onChange={getSearchValue}
             placeholder="Search products , brands and categories"
             required
           />
           <button>Search</button>
+          <ul
+            className={
+              searchSuggestions.length !== 0
+                ? "suggestions_div glass active"
+                : "suggestions_div"
+            }
+          >
+            {searchSuggestions &&
+              searchSuggestions.map((suggestion, index) => (
+                <li
+                  onClick={() =>
+                    dispatch(getSearchParams(suggestion.product_name))
+                  }
+                  key={index}
+                >
+                  {suggestion.product_name}
+                </li>
+              ))}
+          </ul>
         </form>
 
         <div className="navlinks">
           <div className="wishlist_icon icon_div" data-tooltip="wishlist">
-            {favorites.length !== 0 && (
+            {favorites.length !== 0 && cookie["token"] && (
               <p className="favorites_count pointer-events-none">
                 {favorites.length}
               </p>
@@ -88,7 +256,11 @@ const Navbar = () => {
                 cursor: "pointer",
               }}
               size="default"
-              onClick={() => setShowProfileModal((x) => !x)}
+              onClick={() =>
+                profileModalState
+                  ? dispatch(setProfileModalState(false))
+                  : dispatch(setProfileModalState(true))
+              }
               className="avatar"
             >
               {user &&
@@ -104,7 +276,7 @@ const Navbar = () => {
           )}
 
           <div className="cart_icon icon_div" data-tooltip="Cart">
-            {cart.length != 0 && (
+            {cart.length != 0 && cookie["token"] && (
               <p className="favorites_count pointer-events-none">
                 {cart.length}
               </p>
@@ -116,7 +288,9 @@ const Navbar = () => {
         </div>
       </nav>
       <div
-        className={showProfileModal ? "profile_modal active" : "profile_modal"}
+        className={
+          profileModalState ? "profile_modal glass active" : "profile_modal"
+        }
       >
         <div className="user_details">
           <Avatar
@@ -141,7 +315,7 @@ const Navbar = () => {
           onClick={goToProfilePage}
           className="cursor-pointer"
         >
-          Customize user profile
+          <LuPencil /> Customize user profile
         </Link>
         <Link
           to="/signin"

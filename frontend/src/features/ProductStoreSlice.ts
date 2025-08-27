@@ -25,16 +25,22 @@ export type User = {
 interface State {
   products: Product[];
   productscategory: Product[];
+  searchedProducts: Product[];
   user: User[];
   status: "idle" | "pending" | "succeeded" | "failed";
+  searching_products_status: "idle" | "pending" | "succeeded" | "failed";
   error: null | string;
   token: string;
   isAuthenticated: boolean;
   size: string;
+  search_params: string;
+  sidebar_isActive: boolean;
+  profileModalState: boolean;
 }
 
 const initialState: State = {
   products: [],
+  searchedProducts: [],
   productscategory: [],
   status: "idle",
   error: "",
@@ -42,6 +48,10 @@ const initialState: State = {
   user: [],
   isAuthenticated: false,
   size: "",
+  searching_products_status: "idle",
+  search_params: "",
+  sidebar_isActive: false,
+  profileModalState: false,
 };
 
 let all_products_id: any;
@@ -52,6 +62,25 @@ export const fetchProducts: any = createAsyncThunk(
   async () => {
     const response = await axios.get(`${BASE_URL}/products/`);
     return response.data;
+  }
+);
+
+export const searchProducts: any = createAsyncThunk(
+  "search/products",
+  async (search_params: string) => {
+    if (search_params) {
+      const response = await axios.get(
+        `${BASE_URL}/products?search=${search_params}`
+      );
+      if (response.data) {
+        console.log(response.data);
+        return response.data;
+      } else {
+        console.log("not foind");
+
+        return "not found";
+      }
+    }
   }
 );
 
@@ -161,6 +190,17 @@ export const ProductStoreSlice = createSlice({
     getProductSize(state, action) {
       state.size = action.payload;
     },
+
+    setProfileModalState(state, action) {
+      state.profileModalState = action.payload;
+    },
+
+    getSearchParams(state, action) {
+      state.search_params = action.payload;
+    },
+    toggleSidebarView(state, action) {
+      state.sidebar_isActive = action.payload;
+    },
   },
   extraReducers(builder) {
     builder
@@ -185,6 +225,18 @@ export const ProductStoreSlice = createSlice({
         });
         state.error =
           action.error.message || "Could not fetch products , try again later.";
+      })
+
+      // searching a product
+      .addCase(searchProducts.pending, (state) => {
+        state.searching_products_status = "pending";
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.searching_products_status = "succeeded";
+        state.searchedProducts = action.payload;
+      })
+      .addCase(searchProducts.rejected, (state) => {
+        state.searching_products_status = "failed";
       })
 
       // fetching by category
@@ -270,15 +322,24 @@ export const ProductStoreSlice = createSlice({
       })
       .addCase(signUp.rejected, (state) => {
         state.status = "failed";
-        toast.error("Could not create user account , try again later", {
-          autoClose: 3000,
-          hideProgressBar: true,
-        });
+        toast.error(
+          "Could not create user account , username already exists.",
+          {
+            autoClose: 3000,
+            hideProgressBar: true,
+          }
+        );
       });
   },
 });
 
 export default ProductStoreSlice.reducer;
-export const { logout, setIsAuthenticated, getProductSize } =
-  ProductStoreSlice.actions;
+export const {
+  logout,
+  setIsAuthenticated,
+  getProductSize,
+  getSearchParams,
+  toggleSidebarView,
+  setProfileModalState,
+} = ProductStoreSlice.actions;
 export const productStoreSlice = (state: { products: State }) => state.products;

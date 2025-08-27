@@ -21,7 +21,6 @@ interface State {
   adding_item_to_cart_status: "idle" | "pending" | "succeeded" | "failed";
   removing_item_from_cart_status: "idle" | "pending" | "succeeded" | "failed";
   updating_item_quantity_status: "idle" | "pending" | "succeeded" | "failed";
-  isLoading: boolean;
 }
 
 const initialState: State = {
@@ -30,7 +29,6 @@ const initialState: State = {
   adding_item_to_cart_status: "idle",
   removing_item_from_cart_status: "idle",
   updating_item_quantity_status: "idle",
-  isLoading: false,
 };
 
 type Payload = {
@@ -112,6 +110,7 @@ export const updateItemQuantity: any = createAsyncThunk(
           },
         }
       );
+      console.log(response.data);
 
       return response.data;
     }
@@ -121,11 +120,7 @@ export const updateItemQuantity: any = createAsyncThunk(
 export const CartStoreSlice = createSlice({
   initialState,
   name: "cart",
-  reducers: {
-    renderLoadingState(state, action) {
-      state.isLoading = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       // adding items to cart
@@ -186,8 +181,13 @@ export const CartStoreSlice = createSlice({
         state.updating_item_quantity_status = "pending";
         // toast.loading("Applying your changes...");
       })
-      .addCase(updateItemQuantity.fulfilled, (state) => {
+      .addCase(updateItemQuantity.fulfilled, (state, action) => {
         state.updating_item_quantity_status = "succeeded";
+        const indexOfPayload = state.cart.findIndex(
+          (item) => item.product_id === action.payload.product_id
+        );
+
+        state.cart.splice(indexOfPayload, 1, action.payload);
       })
       .addCase(updateItemQuantity.rejected, (state) => {
         state.updating_item_quantity_status = "failed";
@@ -199,5 +199,4 @@ export const CartStoreSlice = createSlice({
 });
 
 export default CartStoreSlice.reducer;
-export const { renderLoadingState } = CartStoreSlice.actions;
 export const cartItemsSlice = (state: { cart: State }) => state.cart;

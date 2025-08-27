@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   cartItemsSlice,
-  getCartItems,
-  renderLoadingState,
   updateItemQuantity,
   type CartProduct,
 } from "../../features/CartSlice";
@@ -11,6 +9,7 @@ import { useEffect, useState } from "react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useCookies } from "react-cookie";
 import Spinner from "./Spinner";
+import { toast } from "react-toastify";
 
 const CartProductCard = ({ data }: { data: CartProduct }) => {
   const { id, product_id, product_name, category, quantity, added_on, size } =
@@ -20,14 +19,15 @@ const CartProductCard = ({ data }: { data: CartProduct }) => {
   const { thumbnail, old_price, price } = products[product_id - 1];
   const [newQuantity, setNewQuantity] = useState<number>();
   const [cookie] = useCookies(["token"]);
-  const { updating_item_quantity_status, isLoading } =
-    useSelector(cartItemsSlice);
+  const {} = useSelector(cartItemsSlice);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (newQuantity) {
-      dispatch(renderLoadingState(true));
+      setIsLoading(true);
 
       setTimeout(() => {
+        setIsLoading(false);
         dispatch(
           updateItemQuantity({
             quantity: newQuantity,
@@ -35,16 +35,13 @@ const CartProductCard = ({ data }: { data: CartProduct }) => {
             token: cookie["token"],
           })
         );
+        toast.success("changes applied successfully", {
+          autoClose: 2000,
+          hideProgressBar: true,
+        });
       }, 1000);
     }
   }, [newQuantity]);
-
-  useEffect(() => {
-    if (updating_item_quantity_status == "succeeded") {
-      dispatch(renderLoadingState(false));
-      dispatch(getCartItems(cookie["token"]));
-    }
-  }, [updating_item_quantity_status, dispatch]);
 
   return (
     <div className="cart_card">

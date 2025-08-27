@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   fetchProductsByCategory,
   productStoreSlice,
+  toggleSidebarView,
 } from "../../features/ProductStoreSlice";
 import ProductCard from "./ProductCard";
 import { useEffect } from "react";
@@ -22,7 +23,7 @@ const ProductHomeCategory = () => {
     <div className="products__container">
       {products &&
         products.map((product, index) => (
-          <ProductCard productData={product} key={index} />
+          <ProductCard type="Regular" productData={product} key={index} />
         ))}
     </div>
   );

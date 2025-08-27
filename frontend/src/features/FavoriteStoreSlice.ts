@@ -160,7 +160,7 @@ export const favoriteStoreSlice = createSlice({
       .addCase(deleteFromFavorites.fulfilled, (state) => {
         state.removing_product_from_favorite_status = "succeeded";
 
-        toast.info("Removed from favorites  ", {
+        toast.success("Removed from favorites  ", {
           autoClose: 3000,
           hideProgressBar: true,
         });

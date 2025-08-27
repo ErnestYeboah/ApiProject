@@ -16,8 +16,9 @@ class ProductViewset(ModelViewSet):
     serializer_class = ProductSerializer
     # permission_classes = [IsAuthenticated, ]
     # authentication_classes = [TokenAuthentication, ]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['category']
+    search_fields = ['product_name']
 
 
 class FavoriteItemsViewset(ModelViewSet):
