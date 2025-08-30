@@ -39,6 +39,7 @@
   --padding-1: 1rem;
   --margin: clamp(3rem, 3vw, 5rem);
   --padding-inline: clamp(1rem, 3vw, 5rem);
+  --faded-text-clr: rgb(34, 31, 31);
 }
 
 .glass {
@@ -102,13 +103,15 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   gap: var(--gap);
+
+  /* @media (width > 992px) {
+    padding-block: 4rem;
+  } */
 }
 
 .product_card {
-  --card-height: 50vh;
-  height: var(--card-height);
+  height: max(55vh, 5rem);
   display: grid;
-  grid-template-rows: calc(var(--card-height) - 10%) 10%;
   box-shadow: 0px 4px 4px rgba(0 0 0 / 0.1);
 
   .image_container {
@@ -120,6 +123,10 @@ img {
     }
   }
 
+  .text__content {
+    padding-inline: 1cqi;
+  }
+
   .heart {
     scale: 1.5;
   }
@@ -128,6 +135,7 @@ img {
 .favorite__item_wrapper {
   container-name: favorite_item_wrapper;
   container-type: inline-size;
+  justify-items: start;
 }
 
 @container favorite_item_wrapper (width > 40rem) {
@@ -163,7 +171,7 @@ img {
   background-color: var(--accent-clr);
   color: var(--primary-clr);
   padding: 0.5rem;
-  border-radius: 0 0 0 10px;
+  border-radius: 0 10px 0 10px;
   cursor: pointer;
 
   &:hover {
@@ -231,7 +239,7 @@ img {
 }
 
 .searched_products_container {
-  padding-inline: var(--margin);
+  padding-inline: var(--padding-inline);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--gap);

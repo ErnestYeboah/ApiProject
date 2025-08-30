@@ -7,6 +7,7 @@ div:has(> .sign_greet) {
   font-family: var(--font-1);
   font-weight: bold;
   font-size: 1.2rem;
+  margin-top: clamp(0px, 5vw, 6rem);
 
   + p {
     margin-bottom: var(--padding-1);
@@ -53,7 +54,15 @@ div:has(> .sign_greet) {
     justify-self: center;
     justify-items: center;
 
-    .avatar {
+    .profile_image {
+      background-color: blue;
+      border-radius: 50%;
+      z-index: 1;
+      position: absolute;
+    }
+
+    .avatar,
+    .profile_image {
       --avatar-size: 6rem;
       width: var(--avatar-size);
       font-size: 3rem;

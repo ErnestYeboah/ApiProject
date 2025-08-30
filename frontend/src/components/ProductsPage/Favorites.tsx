@@ -8,6 +8,7 @@ import {
   removeItemFromFavorites,
 } from "../../features/FavoriteStoreSlice";
 import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
 
 const Favorites = () => {
   const { products } = useSelector(productStoreSlice);
@@ -40,6 +41,22 @@ const Favorites = () => {
             );
           })}
       </div>
+
+      {!cookie["token"] && (
+        <div className="text-center">
+          <p className=" opacity-[.6] text-[2rem] mt-[var(--margin)] ">
+            No item/s in Favorites{" "}
+          </p>
+          {!cookie["token"] && (
+            <p>
+              <Link className="text-[var(--accent-clr)]" to={"/signin"}>
+                Sign In
+              </Link>{" "}
+              to view your items in cart
+            </p>
+          )}
+        </div>
+      )}
     </Fragment>
   );
 };

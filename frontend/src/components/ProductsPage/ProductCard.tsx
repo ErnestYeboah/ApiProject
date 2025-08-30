@@ -83,16 +83,19 @@ const ProductCard = ({
     <>
       {type == "Regular" ? (
         <div className="product_card cursor-pointer">
-          <Link to={`/product/${id}`} className="text__link">
-            <div className="text__content my-2">
-              <div className="image_container">
-                <img src={thumbnail} loading="lazy" alt={product_name} />
-              </div>
-              <p className="font-bold ">{product_name}</p>
-              <p>{category.charAt(0).toUpperCase() + category.slice(1)}</p>
+          <Link to={`/product/${id}`} className="card__link">
+            <div className="image_container">
+              <img src={thumbnail} loading="lazy" alt={product_name} />
+            </div>
+
+            <div className="text__content">
+              <p className="">{product_name}</p>
+              <p className="mt-[.5rem] text-[var(--accent-clr)] ">
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </p>
             </div>
           </Link>
-          <div className="flex justify-between mx-3">
+          <div className="flex items-center justify-between mx-3">
             <p>₵{price}</p>
             {cookie["token"] &&
             favorites.some(
@@ -187,7 +190,13 @@ const ProductCard = ({
               />
             </label>
 
-            <button onClick={addToCart}>Add To Cart</button>
+            <button
+              onClick={() =>
+                cookie["token"] ? addToCart : navigate("/signin")
+              }
+            >
+              Add To Cart
+            </button>
           </div>
         </div>
       )}

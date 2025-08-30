@@ -57,7 +57,7 @@ const Home = () => {
 
       <section className="section">
         <h2 className="mb-[var(--padding-1)]">Just In</h2>
-        <div className="parent_grid just_in_sec">
+        <div className="just_in_sec">
           {justInItems &&
             justInItems.map((item, index) => (
               <div key={index} className="card">

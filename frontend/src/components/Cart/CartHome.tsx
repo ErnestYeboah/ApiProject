@@ -17,25 +17,25 @@ const CartHome = () => {
   return (
     <>
       {contextHolder}
-      {cart.length > 0 ? (
-        cookie["token"] && (
-          <div className="px-[var(--margin)] cart__container">
-            <div className="card__wrapper">
-              {cart &&
-                cart.map((cartItem, index) => {
-                  const product = products.find(
-                    (product) => product.id == cartItem.product_id
-                  );
-                  return (
-                    product && <CartProductCard key={index} data={cartItem} />
-                  );
-                })}
-            </div>
-
-            <CheckOutModal />
+      {cart.length > 0 && cookie["token"] && (
+        <div className="px-[var(--padding-inline)] cart__container">
+          <div className="card__wrapper">
+            {cart &&
+              cart.map((cartItem, index) => {
+                const product = products.find(
+                  (product) => product.id == cartItem.product_id
+                );
+                return (
+                  product && <CartProductCard key={index} data={cartItem} />
+                );
+              })}
           </div>
-        )
-      ) : (
+
+          <CheckOutModal />
+        </div>
+      )}
+
+      {!cookie["token"] && (
         <div className="text-center">
           <p className=" opacity-[.6] text-[2rem] mt-[var(--margin)] ">
             No item/s in Cart{" "}

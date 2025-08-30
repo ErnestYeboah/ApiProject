@@ -1,6 +1,7 @@
 .carousel {
   width: 100%;
   height: 80vh;
+  margin-top: -1rem;
   overflow-x: hidden;
   position: relative;
 }
@@ -75,6 +76,7 @@
     --btn-clr: var(--primary-clr);
   }
 }
+/* for mobile devices */
 .category_div {
   @media (width < 992px) {
     & button {
@@ -82,7 +84,8 @@
     }
   }
 }
-.parent_grid {
+/* for larger screens */
+.category_div {
   display: grid;
   grid-auto-rows: 50vh;
   gap: var(--gap);
@@ -114,6 +117,8 @@
       flex-direction: column;
       align-items: center;
       justify-items: start;
+      height: fit-content;
+      margin-top: 2rem;
     }
 
     & img {
@@ -122,8 +127,14 @@
   }
 
   @media (width > 992px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 70vh;
+    gap: var(--gap);
+
     > * {
+      padding: var(--padding-min);
+
       & img {
         height: 90%;
         object-fit: cover;
