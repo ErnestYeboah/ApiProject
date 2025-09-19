@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'amaetonfashionhouse',
         'USER': 'root',
         'PASSWORD': 'greatlibertyschool.',
-        'HOST':'localhost',
+        'HOST':'https://amaetonstore.pythonanywhere.com/api/',
         'PORT':'3306',
     }
 }
